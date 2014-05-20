@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.firefly.sample.cast.refplayer"
+    android:versionCode="2"
+    android:versionName="1.1" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="true" >
+    </uses-feature>
+
+    <application
+        android:name="com.firefly.sample.cast.refplayer.CastApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Castvideo" >
+
+        <activity
+            android:name="com.firefly.sample.cast.refplayer.VideoBrowserActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.firefly.sample.cast.refplayer.mediaplayer.LocalPlayerActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.CastVideoOverlayYellow" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.firefly.sample.castcompanionlibrary.cast.player.VideoCastControllerActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:parentActivityName="com.firefly.sample.cast.refplayer.VideoBrowserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CastVideoOverlayYellow" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.firefly.sample.cast.refplayer.VideoBrowserActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.firefly.sample.cast.refplayer.settings.CastPreference"
+            android:label="@string/action_settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.firefly.sample.castcompanionlibrary.remotecontrol.VideoIntentReceiver" >
+            <intent-filter>
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="com.firefly.sample.castcompanionlibrary.action.toggleplayback" />
+                <action android:name="com.firefly.sample.castcompanionlibrary.action.stop" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.firefly.sample.castcompanionlibrary.notification.VideoCastNotificationService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.firefly.sample.castcompanionlibrary.action.toggleplayback" />
+                <action android:name="com.firefly.sample.castcompanionlibrary.action.stop" />
+                <action android:name="com.firefly.sample.castcompanionlibrary.action.notificationvisibility" />
+            </intent-filter>
+        </service>
+        
+        <service android:name="com.firefly.sample.cast.refplayer.services.AppCastDeviceService" android:exported="false">
+            <intent-filter>
+                <action android:name="android.media.MediaRouteProviderService" />
+            </intent-filter>
+            
+            <intent-filter>
+                <action android:name="com.fireflycast.cast.service.INTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.fireflycast.cast.service.DEVICE_SCANNER_INTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>              
+        </service>
+
+        <service android:name="com.firefly.sample.cast.refplayer.services.AppCastService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.fireflycast.cast.service.BIND_CAST_DEVICE_CONTROLLER_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>            
+          
+        </service>
+    </application>
+
+</manifest>
